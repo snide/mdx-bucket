@@ -11,3 +11,26 @@ some content below
 
 
 <Button>React in markdown</Button>
+
+```tsx
+let wasCancelled = false;
+let syncInterval: NodeJS.Timeout;
+
+const syncLoop = async () => {
+  console.log("Syncing content files from git");
+
+  await syncRun();
+
+  if (wasCancelled) return;
+
+  syncInterval = setTimeout(syncLoop, 1000 * 60);
+};
+
+// Block until the first sync is done
+await syncLoop();
+
+return () => {
+  wasCancelled = true;
+  clearTimeout(syncInterval);
+};
+```
